@@ -83,3 +83,12 @@ data:
       static_configs:
       - targets: ['kube-state-metrics.monitoring.svc.cluster.local:8080']
 
+       - job_name: 'kubelet'
+      metrics_path: /metrics/cadvisor
+      scheme: https
+      tls_config:
+        insecure_skip_verify: true
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      kubernetes_sd_configs:
+      - role: node
+
