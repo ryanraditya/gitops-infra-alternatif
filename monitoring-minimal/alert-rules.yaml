@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: alert-rules
   namespace: monitoring
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: ""
 labels:
   role: alert-rules
 data:
@@ -18,3 +20,4 @@ data:
         annotations:
           summary: "Pod {{ $labels.pod }} restart lebih dari 5 kali!"
           description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} sudah restart {{ $value }} kali."
+
