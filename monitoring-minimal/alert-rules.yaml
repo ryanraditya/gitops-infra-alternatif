@@ -3,8 +3,6 @@ kind: ConfigMap
 metadata:
   name: alert-rules
   namespace: monitoring
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: ""
 labels:
   role: alert-rules
 data:
