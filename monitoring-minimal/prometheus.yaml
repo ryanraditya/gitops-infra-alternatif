@@ -83,7 +83,7 @@ data:
       static_configs:
       - targets: ['kube-state-metrics.monitoring.svc.cluster.local:8080']
 
-    - job_name: 'kubelet'
+    - job_name: kubelet
       metrics_path: /metrics/cadvisor
       scheme: https
       tls_config:
