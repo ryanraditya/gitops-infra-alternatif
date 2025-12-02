@@ -1,8 +1,3 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: monitoring
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -18,6 +13,7 @@ spec:
       labels:
         app: pod-restart-exporter
     spec:
+      serviceAccountName: pod-restart-sa
       containers:
       - name: exporter
         image: python:3.10-slim
@@ -32,32 +28,26 @@ spec:
             from kubernetes import client, config
 
             app = Flask(__name__)
-            config.load_incluster_config()
+            try:
+                config.load_incluster_config()
+            except:
+                config.load_kube_config()
             v1 = client.CoreV1Api()
 
             @app.route('/metrics')
             def metrics():
-                pods = v1.list_pod_for_all_namespaces()
+                try:
+                    pods = v1.list_pod_for_all_namespaces()
+                except Exception as e:
+                    return Response(str(e), status=500)
+
                 lines = []
                 for pod in pods.items:
-                    for c in pod.status.container_statuses or []:
+                    for c in (pod.status.container_statuses or []):
                         restart = c.restart_count
                         lines.append(f'pod_restart_count{{namespace="{pod.metadata.namespace}",pod="{pod.metadata.name}",container="{c.name}"}} {restart}')
                 return Response("\n".join(lines), mimetype='text/plain')
 
-            app.run(host='0.0.0.0', port=9113)
             EOF
             python /exporter.py
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: pod-restart-exporter
-  namespace: monitoring
-spec:
-  type: ClusterIP
-  ports:
-  - port: 9113
-    targetPort: 9113
-  selector:
-    app: pod-restart-exporter
+
