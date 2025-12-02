@@ -84,17 +84,14 @@ data:
       - targets: ['kube-state-metrics.monitoring.svc.cluster.local:8080']
 
     - job_name: kubelet
-      kubernetes_sd_configs:
-      - role: node
+      static_configs:
+      - targets: ['kubelet-proxy.monitoring.svc.cluster.local:10250']
       scheme: https
       tls_config:
         insecure_skip_verify: true
-      metrics_path: /metrics
 
     - job_name: kubelet-cadvisor
-      kubernetes_sd_configs:
-      - role: node
-      scheme: https
-      tls_config:
-        insecure_skip_verify: true
-      metrics_path: /metrics/cadvisor
+      static_configs:
+      - targets: ['kubelet-proxy.monitoring.svc.cluster.local:4194']
+      scheme: http
+
