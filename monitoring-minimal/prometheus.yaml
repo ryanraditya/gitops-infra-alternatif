@@ -87,17 +87,7 @@ data:
       static_configs:
       - targets: ['kube-state-metrics.monitoring.svc.cluster.local:8080']
 
-    # ---- KUBELET READONLY PORT (MINIKUBE) ----
-    - job_name: kubelet-readonly
-      metrics_path: /metrics
+    - job_name: pod-restart-exporter
       static_configs:
-      - targets: ['192.168.49.2:10255']
-      scheme: http
-
-    # ---- CADVISOR VIA KUBELET (MODERN) ----
-    - job_name: cadvisor
-      metrics_path: /metrics/cadvisor
-      static_configs:
-      - targets: ['192.168.49.2:10255']
-      scheme: http
+      - targets: ['pod-restart-exporter.monitoring.svc.cluster.local:9113']
 

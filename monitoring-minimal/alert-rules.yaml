@@ -11,7 +11,7 @@ data:
     - name: pod-restart-alerts
       rules:
       - alert: PodRestartTooMany
-        expr: kube_pod_container_status_restarts_total > 5
+        expr: pod_restart_count > 5
         for: 10s
         labels:
           severity: critical
