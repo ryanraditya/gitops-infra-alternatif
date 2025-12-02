@@ -83,15 +83,8 @@ data:
       static_configs:
       - targets: ['kube-state-metrics.monitoring.svc.cluster.local:8080']
 
-    - job_name: kubelet
+    - job_name: kubelet-readonly
       static_configs:
-      - targets: ['kubelet-proxy.monitoring.svc.cluster.local:10250']
-      scheme: https
-      tls_config:
-        insecure_skip_verify: true
-
-    - job_name: kubelet-cadvisor
-      static_configs:
-      - targets: ['kubelet-proxy.monitoring.svc.cluster.local:4194']
+      - targets: ['192.168.49.2:10255']
       scheme: http
 
