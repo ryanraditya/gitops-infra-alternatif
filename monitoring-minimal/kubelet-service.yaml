@@ -4,7 +4,6 @@ metadata:
   name: kubelet-proxy
   namespace: monitoring
 spec:
-  clusterIP: None
   ports:
   - name: https-metrics
     port: 10250
@@ -12,3 +11,4 @@ spec:
   - name: cadvisor
     port: 4194
     targetPort: 4194
+
